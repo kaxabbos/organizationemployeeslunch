@@ -1,0 +1,27 @@
+<div th:fragment="nav">
+    <nav style="font-size: 1.5em" class="navbar navbar-light navbar-expand-md sticky-top navbar-shrink py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <span>OrganizationEmployeesLunch</span>
+            </a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li th:if="${user.role.name() != 'BUYER'}" class="nav-item"><a class="nav-link" href="/stats">Статистика питания</a></li>
+                    <li th:if="${user.role.name() != 'NOT'}" class="nav-item"><a class="nav-link" href="/product/all">Блюда</a></li>
+                    <li th:if="${user.role.name() == 'SELLER' or user.role.name() == 'BUYER'}" class="nav-item"><a class="nav-link" href="/cart">Мой заказ</a></li>
+                    <li th:if="${user.role.name() == 'ADMIN'}" class="nav-item"><a class="nav-link" href="/user/all">Профили</a></li>
+                    <li th:if="${user.role.name() == 'SELLER'}" class="nav-item"><a class="nav-link" href="/product/add">Добавить блюдо</a></li>
+                    <li th:if="${user.role.name() != 'NOT'}" class="nav-item">
+                        <form class="nav-link" action="/logout" method="post">
+                            <button class="btn btn-lg" type="submit" style="text-decoration: none; border: none; margin-top: -8px">Выход</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

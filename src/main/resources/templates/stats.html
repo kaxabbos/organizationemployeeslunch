@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Статистика питания</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body style="background-position: 0 -60px;">
+<div th:insert="blocks/nav :: nav"></div>
+
+<section class="py-5">
+    <div class="container py-5">
+        <div class="row mb-4 mb-lg-5">
+            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                <h1><strong><span style="color: rgb(0, 183, 121);">Статистика питания</span></strong><br></h1>
+            </div>
+        </div>
+        <div hidden>
+            <span id="topQuantityName0" th:text="${topQuantityName[0]}"></span>
+            <span id="topQuantityNumber0" th:text="${topQuantityNumber[0]}"></span>
+            <span id="topQuantityName1" th:text="${topQuantityName[1]}"></span>
+            <span id="topQuantityNumber1" th:text="${topQuantityNumber[1]}"></span>
+            <span id="topQuantityName2" th:text="${topQuantityName[2]}"></span>
+            <span id="topQuantityNumber2" th:text="${topQuantityNumber[2]}"></span>
+            <span id="topQuantityName3" th:text="${topQuantityName[3]}"></span>
+            <span id="topQuantityNumber3" th:text="${topQuantityNumber[3]}"></span>
+            <span id="topQuantityName4" th:text="${topQuantityName[4]}"></span>
+            <span id="topQuantityNumber4" th:text="${topQuantityNumber[4]}"></span>
+        </div>
+        <div id="topQuantity" style="width: 100%; height: 500px;"></div>
+        <hr>
+        <div class="row">
+            <div class="col text-center"><h1>Список проданных блюд</h1></div>
+        </div>
+        <hr>
+        <div class="row text-center">
+            <div class="col">
+                <h1 style="font-size: 24px;">Название</h1>
+            </div>
+            <div class="col">
+                <h1 style="font-size: 24px;">Цена</h1>
+            </div>
+            <div class="col">
+                <h1 style="font-size: 24px;">Количество</h1>
+            </div>
+            <div class="col">
+                <h1 style="font-size: 24px;">Прибыль</h1>
+            </div>
+        </div>
+        <div style="font-size: 1.5em" th:each="product : ${products}" class="row">
+            <div class="col"><span th:text="${product.name}"></span></div>
+            <div class="col"><span th:text="${product.price}"></span></div>
+            <div class="col"><span th:text="${product.stat.quantity}"></span></div>
+            <div class="col"><span th:text="${product.stat.price}"></span></div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h3>Общая прибыль: <strong th:text="${profitPrice}"></strong></h3>
+            </div>
+        </div>
+        <hr>
+    </div>
+</section>
+<footer th:insert="blocks/footer :: footer"></footer>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", {packages: ["corechart"]});
+    google.charts.setOnLoadCallback(drawChart3);
+
+    function drawChart3() {
+        var topQuantityName0 = document.querySelector('#topQuantityName0').textContent;
+        var topQuantityNumber0 = parseInt(document.querySelector('#topQuantityNumber0').textContent);
+        var topQuantityName1 = document.querySelector('#topQuantityName1').textContent;
+        var topQuantityNumber1 = parseInt(document.querySelector('#topQuantityNumber1').textContent);
+        var topQuantityName2 = document.querySelector('#topQuantityName2').textContent;
+        var topQuantityNumber2 = parseInt(document.querySelector('#topQuantityNumber2').textContent);
+        var topQuantityName3 = document.querySelector('#topQuantityName3').textContent;
+        var topQuantityNumber3 = parseInt(document.querySelector('#topQuantityNumber3').textContent);
+        var topQuantityName4 = document.querySelector('#topQuantityName4').textContent;
+        var topQuantityNumber4 = parseInt(document.querySelector('#topQuantityNumber4').textContent);
+        var data = google.visualization.arrayToDataTable([
+            ['Название', 'Количество', {role: 'style'}, {role: 'annotation'}],
+            [topQuantityName0, topQuantityNumber0, "red", topQuantityNumber0],
+            [topQuantityName1, topQuantityNumber1, "brown", topQuantityNumber1],
+            [topQuantityName2, topQuantityNumber2, "green", topQuantityNumber2],
+            [topQuantityName3, topQuantityNumber3, "blue", topQuantityNumber3],
+            [topQuantityName4, topQuantityNumber4, "purple", topQuantityNumber4],
+        ]);
+
+        var options = {
+            title: 'Топ-5 продаваемых блюд',
+            hAxis: {title: 'Название'},
+            vAxis: {title: 'Количество'},
+            bar: {groupWidth: "80%"},
+            legend: {position: "none"}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('topQuantity'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bold-and-bright.js"></script>
+</body>
+
+</html>
